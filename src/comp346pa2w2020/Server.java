@@ -445,14 +445,18 @@ public class Server extends Thread {
     	if (serverThreadId=="thread1") {
     		server1EndTime=System.currentTimeMillis();
     		System.out.println("\n Terminating server thread1 - " + " Running time " + (server1EndTime - server1StartTime) + " milliseconds");
+    		serverThreadRunningStatus1 = "terminated";
     	}
     		
     	else{
     		server2EndTime=System.currentTimeMillis();
     		System.out.println("\n Terminating server thread2 - " + " Running time " + (server2EndTime - server2StartTime) + " milliseconds");
-    	}
-    	Network.disconnect(Network.getServerIP());
-        
+    		serverThreadRunningStatus2 = "terminated";
+    		if (serverThreadRunningStatus1=="terminated") {
+    			Network.disconnect(Network.getServerIP());
+    			System.out.println("\n DEBUG: BOTH SERVER THREADS DISCONNECTED");
+    		}
+    	}  
 	
     }
 }

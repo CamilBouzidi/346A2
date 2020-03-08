@@ -239,6 +239,7 @@ public class Client extends Thread {
 			long after = System.currentTimeMillis();
 	    	Network.disconnect(Network.getClientIP());
 	    	System.out.println("\n Terminating thread, Client, mode: " + this.clientOperation + ", Execution time(ms): " + (after-before));
+	    	System.out.println("\n DEBUG: "+this.clientOperation+" CLIENT DISCONNECTED");
 	    	System.out.println(" \n DEBUG: From the receiving client, output buffer status is "+Network.getOutBufferStatus());
 	    	return;
 		}
@@ -247,6 +248,7 @@ public class Client extends Thread {
     	long after = System.currentTimeMillis();
     	Network.disconnect(Network.getClientIP());
     	System.out.println("\n Terminating thread, Client, mode: " + this.clientOperation + ", Execution time(ms): " + (after-before));
+    	System.out.println("\n DEBUG: "+this.clientOperation+" CLIENT DISCONNECTED");
     	
     	//Client receiving operations: ideally, this happens after the client sending operations and after the server has been started.
     	//Operation to receive info from output buffer:

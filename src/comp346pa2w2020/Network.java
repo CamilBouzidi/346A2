@@ -25,6 +25,8 @@ public class Network extends Thread {
     private static Transactions outGoingPacket[];              /* Outgoing network buffer */
     private static String inBufferStatus, outBufferStatus;     /* Current status of the network buffers - normal, full, empty */
     private static String networkStatus;                       /* Network status - active, inactive */
+    private static Semaphore semBuffer1 = new Semaphore(1);
+    private static Semaphore semBuffer2 = new Semaphore(1);
        
     /** 
      * Constructor of the Network class
@@ -354,6 +356,15 @@ public class Network extends Thread {
      */
         public static boolean send(Transactions inPacket)
         {
+        	/* try {
+        		semBuffer1.acquire();
+        		//ADD ALL OF THE inComingPacket OPERATIONS HERE
+        	} catch (InterruptedException e1) {
+        		System.err.println(e1);
+        	} finally {
+        		semBuffer1.release();
+        	} */
+        		
         	
         		  inComingPacket[inputIndexClient].setAccountNumber(inPacket.getAccountNumber());
         		  inComingPacket[inputIndexClient].setOperationType(inPacket.getOperationType());
@@ -362,8 +373,8 @@ public class Network extends Thread {
         		  inComingPacket[inputIndexClient].setTransactionError(inPacket.getTransactionError());
         		  inComingPacket[inputIndexClient].setTransactionStatus("transferred");
             
-        		 /* System.out.println("\n DEBUG : Network.send() - index inputIndexClient " + inputIndexClient); */
-        		  /* System.out.println("\n DEBUG : Network.send() - account number " + inComingPacket[inputIndexClient].getAccountNumber()); */
+        		 System.out.println("\n DEBUG : Network.send() - index inputIndexClient " + inputIndexClient);
+        		 System.out.println("\n DEBUG : Network.send() - account number " + inComingPacket[inputIndexClient].getAccountNumber());
             
         		  setinputIndexClient(((getinputIndexClient( ) + 1) % getMaxNbPackets ()));	/* Increment the input buffer index  for the client */
         		  /* Check if input buffer is full */
@@ -371,7 +382,7 @@ public class Network extends Thread {
         		  {	
         			  setInBufferStatus("full");
             	
-        			/* System.out.println("\n DEBUG : Network.send() - inComingBuffer status " + getInBufferStatus()); */
+        			  System.out.println("\n DEBUG : Network.send() - inComingBuffer status " + getInBufferStatus());
         		  }
         		  else 
         		  {
@@ -396,8 +407,8 @@ public class Network extends Thread {
         		 outPacket.setTransactionError(outGoingPacket[outputIndexClient].getTransactionError());
         		 outPacket.setTransactionStatus("done");
             
-        		 /* System.out.println("\n DEBUG : Network.receive() - index outputIndexClient " + outputIndexClient); */
-        		 /* System.out.println("\n DEBUG : Network.receive() - account number " + outPacket.getAccountNumber()); */
+        		 System.out.println("\n DEBUG : Network.receive() - index outputIndexClient " + outputIndexClient);
+        		 System.out.println("\n DEBUG : Network.receive() - account number " + outPacket.getAccountNumber());
             
         		 setoutputIndexClient(((getoutputIndexClient( ) + 1) % getMaxNbPackets( ))); /* Increment the output buffer index for the client */
         		 /* Check if output buffer is empty */
@@ -405,7 +416,7 @@ public class Network extends Thread {
         		 {	
         			 setOutBufferStatus("empty");
             
-        			/* System.out.println("\n DEBUG : Network.receive() - outGoingBuffer status " + getOutBufferStatus()); */
+        			System.out.println("\n DEBUG : Network.receive() - outGoingBuffer status " + getOutBufferStatus());
         		 }
         		 else 
         		 {
@@ -557,6 +568,7 @@ public class Network extends Thread {
      */
     public void run()
     {	
+    	System.out.println("\n DEBUG : Network.run() - starting network thread");
     	long start = System.currentTimeMillis();
     	while (true)
     	{
@@ -571,6 +583,7 @@ public class Network extends Thread {
     	}    
     	long end = System.currentTimeMillis();
     	System.out.println("\n Network execution time(ms): " + (end - start));
+    	System.out.println("\n DEBUG : NETWORK THREAD DISCONNECTED");
     	System.out.println("\n DEBUG : Network thread TERMINATED - Client and Server disconnected");    
     }
 }
