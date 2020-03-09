@@ -576,9 +576,8 @@ public class Network extends Thread {
     			break;
 			}
     		// what if it's idle, should the network do something in particular?
-    		else {
-				yield();
-			}
+			yield();
+		
     	
     	}    
     	long end = System.currentTimeMillis();

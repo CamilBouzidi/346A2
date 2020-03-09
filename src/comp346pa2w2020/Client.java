@@ -220,35 +220,65 @@ public class Client extends Thread {
      */
     public void run()
     {   
+//    	Transactions transact = new Transactions();
+//    	//long sendClientStartTime, sendClientEndTime, receiveClientStartTime, receiveClientEndTime;
+//    	
+//    	//Client sending operations: will start before the client receiving operations.
+//    	long before = System.currentTimeMillis();
+//    	//Operation to send info to input buffer:
+//    	/* transactions[] must be sent to the network.
+//    	 * It must yield if the input buffer is full.
+//    	 */
+//    	if (this.clientOperation.equals("sending")) {
+//    		//returns when all transactions are sent
+//    		System.out.println(" \n DEBUG: Client.run() - starting client sending thread connected");
+//    		sendTransactions();
+//		} else {
+//			System.out.println(" \n DEBUG: Client.run() - starting client receiving thread connected");
+//			receiveTransactions(transact);
+//			long after = System.currentTimeMillis();
+//	    	Network.disconnect(Network.getClientIP());
+//	    	System.out.println("\n Terminating thread, Client, mode: " + this.clientOperation + ", Execution time(ms): " + (after-before));
+//	    	System.out.println("\n DEBUG: "+this.clientOperation+" CLIENT DISCONNECTED");
+//	    	System.out.println(" \n DEBUG: From the receiving client, output buffer status is "+Network.getOutBufferStatus());
+//	    	return;
+//		}
+//    	
+//    	
+//    	long after = System.currentTimeMillis();
+//    	Network.disconnect(Network.getClientIP());
+//    	System.out.println("\n Terminating thread, Client, mode: " + this.clientOperation + ", Execution time(ms): " + (after-before));
+//    	System.out.println("\n DEBUG: "+this.clientOperation+" CLIENT DISCONNECTED");
+    	
     	Transactions transact = new Transactions();
-    	//long sendClientStartTime, sendClientEndTime, receiveClientStartTime, receiveClientEndTime;
-    	
-    	//Client sending operations: will start before the client receiving operations.
-    	long before = System.currentTimeMillis();
-    	//Operation to send info to input buffer:
-    	/* transactions[] must be sent to the network.
-    	 * It must yield if the input buffer is full.
-    	 */
-    	if (this.clientOperation.equals("sending")) {
-    		//returns when all transactions are sent
-    		System.out.println(" \n DEBUG: Client.run() - starting client sending thread connected");
-    		sendTransactions();
-		} else {
-			System.out.println(" \n DEBUG: Client.run() - starting client receiving thread connected");
-			receiveTransactions(transact);
-			long after = System.currentTimeMillis();
-	    	Network.disconnect(Network.getClientIP());
-	    	System.out.println("\n Terminating thread, Client, mode: " + this.clientOperation + ", Execution time(ms): " + (after-before));
-	    	System.out.println("\n DEBUG: "+this.clientOperation+" CLIENT DISCONNECTED");
-	    	System.out.println(" \n DEBUG: From the receiving client, output buffer status is "+Network.getOutBufferStatus());
-	    	return;
-		}
-    	
-    	
-    	long after = System.currentTimeMillis();
-    	Network.disconnect(Network.getClientIP());
-    	System.out.println("\n Terminating thread, Client, mode: " + this.clientOperation + ", Execution time(ms): " + (after-before));
-    	System.out.println("\n DEBUG: "+this.clientOperation+" CLIENT DISCONNECTED");
+        long sendClientStartTime, sendClientEndTime, receiveClientStartTime, receiveClientEndTime;
+
+        /* Implement the code for the run method */
+        if (clientOperation.equals("sending")) {
+            sendClientStartTime = System.currentTimeMillis();
+            System.out.println("\n // Sending operation begins here //");
+
+            sendTransactions();
+
+            System.out.println("\n // Sending operation ends here //");
+
+            sendClientEndTime = System.currentTimeMillis();
+            System.out.println("\n Terminating client sending thread - " + " Running time " + (sendClientEndTime - sendClientStartTime) + " milliseconds");
+        }
+
+        else if (clientOperation.equals("receiving")) {
+            receiveClientStartTime = System.currentTimeMillis();
+
+            System.out.println("\n // Receiving operation begins here //");
+
+            receiveTransactions(transact);
+
+            System.out.println("\n // Receiving operation ends here //");
+
+            receiveClientEndTime = System.currentTimeMillis();
+            Network.disconnect(Network.getClientIP());
+            System.out.println("\n Terminating client receiving thread - " + " Running time " + (receiveClientEndTime - receiveClientStartTime) + " milliseconds");
+        }
     	
     	//Client receiving operations: ideally, this happens after the client sending operations and after the server has been started.
     	//Operation to receive info from output buffer:
