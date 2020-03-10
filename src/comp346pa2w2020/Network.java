@@ -390,12 +390,13 @@ public class Network extends Thread {
       		  	else 
       		  	{
       		  		setInBufferStatus("normal");
-      		  	}	
+      		  	}
+        		inputBufferFull.release();	
         	} catch (InterruptedException e1) {
         		System.err.println(e1);
-        	} finally {
+        	} /*finally {
         		inputBufferFull.release();
-        	}
+        	}*/
         	return true;
         }   
          
@@ -430,12 +431,13 @@ public class Network extends Thread {
         		 {
         			 setOutBufferStatus("normal"); 
         		 }
-        		 
+
+        		 outputBufferEmpty.release(); 
         	 } catch (InterruptedException e1) {
         		 System.err.println(e1);
-        	 } finally {
+        	 }/* finally {
         		 outputBufferEmpty.release();
-        	 }
+        	 }*/
 
         		 
         	            
@@ -476,12 +478,13 @@ public class Network extends Thread {
          			{
          				setOutBufferStatus("normal");
          			}
-        		 
+
+           		 outputBufferFull.release();
         	 } catch (InterruptedException e1) {
         		 System.err.println(e1);
-        	 } finally {
+        	 } /*finally {
         		 outputBufferFull.release();
-        	 }
+        	 }*/
              return true;
         }   
          
@@ -517,11 +520,12 @@ public class Network extends Thread {
     		   {
     			   setInBufferStatus("normal");
     		   }
+    		   inputBufferEmpty.release();
     	   } catch (InterruptedException e1) {
     		   System.err.println(e1);
-    	   } finally {
+    	   } /*finally {
     		   inputBufferEmpty.release();
-    	   }
+    	   }*/
     	   
              return true;
         }   

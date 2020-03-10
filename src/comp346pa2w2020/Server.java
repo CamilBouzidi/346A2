@@ -455,10 +455,10 @@ public class Server extends Thread {
     		serverThreadRunningStatus2 = "terminated";
     	}
     	
-    	if (serverThreadRunningStatus1=="terminated" && serverThreadRunningStatus2=="terminated") {
+    	/*if (serverThreadRunningStatus1=="terminated" && serverThreadRunningStatus2=="terminated") {
 			Network.disconnect(Network.getServerIP());
 			System.out.println("\n DEBUG: BOTH SERVER THREADS DISCONNECTED");
-		}
+		}*/
 	
     }
 }

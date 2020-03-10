@@ -31,6 +31,14 @@ public class Comp346pa2driver {
         Client objClient2 = new Client("receiving");        /* Start the receiving client thread */
         objClient2.start();
         
+        try {
+        	objServer1.join();
+        	objServer2.join();
+        	Network.disconnect(Network.getServerIP());
+        } catch (Exception e) {
+        	
+        }
+        
       /*..............................................................................................................................................................*/
        
     }
