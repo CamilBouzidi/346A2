@@ -32,7 +32,6 @@ public class Server extends Thread {
 	private String serverThreadId;				 /* Identification of the two server threads - Thread1, Thread2 */
 	private static String serverThreadRunningStatus1;	 /* Running status of thread 1 - idle, running, terminated */
 	private static String serverThreadRunningStatus2;	 /* Running status of thread 2 - idle, running, terminated */
-	public static Semaphore s1 = new Semaphore(1);
   
     /** 
      * Constructor method of Client class
@@ -278,10 +277,11 @@ public class Server extends Thread {
          /* Process the accounts until the client disconnects */
          while ((!Network.getClientConnectionStatus().equals("disconnected")))
          {
-        	while ( (Network.getInBufferStatus().equals("empty") && !Network.getClientConnectionStatus().equals("disconnected")) ) 
-        	{ 
-        		Thread.yield(); 	/* Yield the cpu if the network input buffer is empty */
-        	}
+        	//ATTENTION: THIS IS COMMENTED OUT BECAUSE WE HAVE THE SEMAPHORES.
+        	//while ( (Network.getInBufferStatus().equals("empty") && !Network.getClientConnectionStatus().equals("disconnected")) ) 
+        	//{ 
+        		//Thread.yield(); 	/* Yield the cpu if the network input buffer is empty */
+        	//}
         	 
         	 if (!Network.getInBufferStatus().equals("empty"))
         	 { 
@@ -320,11 +320,11 @@ public class Server extends Thread {
                             System.out.println("\n DEBUG : Server.processTransactions() - Obtaining balance from account" + trans.getAccountNumber());
 					} 
 
-            	
-		        	while (Network.getOutBufferStatus().equals("full")) 
-		        	{ 
-		        		 Thread.yield();		/* Yield the cpu if the network output buffer is full */
-		        	}
+        		 	//ATTENTION: THIS IS COMMENTED OUT BECAUSE WE HAVE THE SEMAPHORES
+		        	//while (Network.getOutBufferStatus().equals("full")) 
+		        	//{ 
+		        		 //Thread.yield();		/* Yield the cpu if the network output buffer is full */
+		        	//}
         		
         		 System.out.println("\n DEBUG : Server.processTransactions() - transferring out account " + trans.getAccountNumber());
         		 
