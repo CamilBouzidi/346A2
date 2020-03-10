@@ -27,8 +27,11 @@ public class Network extends Thread {
     private static String networkStatus;                       /* Network status - active, inactive */
     private static Semaphore inputBufferFull = new Semaphore(0);
     private static Semaphore inputBufferEmpty = new Semaphore(10);
+    private static Semaphore inputMutex = new Semaphore(1);
     private static Semaphore outputBufferFull = new Semaphore(0);
     private static Semaphore outputBufferEmpty = new Semaphore(10);
+    private static Semaphore outputMutex = new Semaphore(1);
+
        
     /** 
      * Constructor of the Network class
@@ -369,6 +372,7 @@ public class Network extends Thread {
         	
         	try {
         		inputBufferEmpty.acquire();
+        		inputMutex.acquire();
         		inComingPacket[inputIndexClient].setAccountNumber(inPacket.getAccountNumber());
         		inComingPacket[inputIndexClient].setOperationType(inPacket.getOperationType());
         		inComingPacket[inputIndexClient].setTransactionAmount(inPacket.getTransactionAmount());
@@ -391,6 +395,7 @@ public class Network extends Thread {
       		  	{
       		  		setInBufferStatus("normal");
       		  	}
+      		  	inputMutex.release();
         		inputBufferFull.release();	
         	} catch (InterruptedException e1) {
         		System.err.println(e1);
@@ -409,6 +414,7 @@ public class Network extends Thread {
         {
         	 try {
         		 outputBufferFull.acquire();
+        		 outputMutex.acquire();
         		 outPacket.setAccountNumber(outGoingPacket[outputIndexClient].getAccountNumber());
         		 outPacket.setOperationType(outGoingPacket[outputIndexClient].getOperationType());
         		 outPacket.setTransactionAmount(outGoingPacket[outputIndexClient].getTransactionAmount());
@@ -431,7 +437,7 @@ public class Network extends Thread {
         		 {
         			 setOutBufferStatus("normal"); 
         		 }
-
+        		 outputMutex.release();
         		 outputBufferEmpty.release(); 
         	 } catch (InterruptedException e1) {
         		 System.err.println(e1);
@@ -456,6 +462,7 @@ public class Network extends Thread {
         {
         	 try {
         		 	outputBufferEmpty.acquire();
+        		 	outputMutex.acquire();
         		 	outGoingPacket[inputIndexServer].setAccountNumber(outPacket.getAccountNumber());
          			outGoingPacket[inputIndexServer].setOperationType(outPacket.getOperationType());
          			outGoingPacket[inputIndexServer].setTransactionAmount(outPacket.getTransactionAmount());
@@ -478,7 +485,7 @@ public class Network extends Thread {
          			{
          				setOutBufferStatus("normal");
          			}
-
+         			outputMutex.release();
            		 outputBufferFull.release();
         	 } catch (InterruptedException e1) {
         		 System.err.println(e1);
@@ -498,6 +505,7 @@ public class Network extends Thread {
         {
     	   try {
     		   inputBufferFull.acquire();
+    		   inputMutex.acquire();
     		   inPacket.setAccountNumber(inComingPacket[outputIndexServer].getAccountNumber());
     		   inPacket.setOperationType(inComingPacket[outputIndexServer].getOperationType());
     		   inPacket.setTransactionAmount(inComingPacket[outputIndexServer].getTransactionAmount());
@@ -520,6 +528,7 @@ public class Network extends Thread {
     		   {
     			   setInBufferStatus("normal");
     		   }
+    		   inputMutex.release();
     		   inputBufferEmpty.release();
     	   } catch (InterruptedException e1) {
     		   System.err.println(e1);
