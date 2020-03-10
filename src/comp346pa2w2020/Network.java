@@ -407,7 +407,7 @@ public class Network extends Thread {
          public static boolean receive(Transactions outPacket)
         {
         	 try {
-        		 outputBufferEmpty.acquire();
+        		 outputBufferFull.acquire();
         		 outPacket.setAccountNumber(outGoingPacket[outputIndexClient].getAccountNumber());
         		 outPacket.setOperationType(outGoingPacket[outputIndexClient].getOperationType());
         		 outPacket.setTransactionAmount(outGoingPacket[outputIndexClient].getTransactionAmount());
@@ -434,7 +434,7 @@ public class Network extends Thread {
         	 } catch (InterruptedException e1) {
         		 System.err.println(e1);
         	 } finally {
-        		 outputBufferFull.release();
+        		 outputBufferEmpty.release();
         	 }
 
         		 
@@ -453,7 +453,7 @@ public class Network extends Thread {
          public static boolean transferOut(Transactions outPacket)
         {
         	 try {
-        		 	outputBufferFull.acquire();
+        		 	outputBufferEmpty.acquire();
         		 	outGoingPacket[inputIndexServer].setAccountNumber(outPacket.getAccountNumber());
          			outGoingPacket[inputIndexServer].setOperationType(outPacket.getOperationType());
          			outGoingPacket[inputIndexServer].setTransactionAmount(outPacket.getTransactionAmount());
@@ -480,7 +480,7 @@ public class Network extends Thread {
         	 } catch (InterruptedException e1) {
         		 System.err.println(e1);
         	 } finally {
-        		 outputBufferEmpty.release();
+        		 outputBufferFull.release();
         	 }
              return true;
         }   
