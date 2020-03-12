@@ -13,6 +13,8 @@ import java.util.InputMismatchException;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor. HELLO
  */
+//Camil Bouzidi, 40099611
+//William Morin-Laberge, 40097269
 
 /** Client class
  *

@@ -7,7 +7,8 @@ import comp346pa2w2020.Server;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
+//Camil Bouzidi, 40099611
+//William Morin-Laberge, 40097269
 /**
  *
  * @author Kerly Titus
